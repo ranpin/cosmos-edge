@@ -1,14 +1,3 @@
-# 评测总览（Cosmos 家族两篇）
-
-| 篇 | 目录 | 内容 |
-|---|---|---|
-| **CR2 篇**（Cosmos-Reason2-8B/2B 量化部署） | `accuracy/`（n210/510 基准 + 校准消融 + 驾驶域 n184 + 分辨率 Pareto）、`perf/`、`profile/`、`kernels/`、`vision/`、`io_example/` + 根级 viz/分析脚本 | 报告页 `site/cr2.html`；方法 `docs/METHODOLOGY.md` |
-| **Cosmos3 篇**（Cosmos3-Edge 世界模型） | `cosmos3/`（reasoner n184 跨代对比）、`policy/`（W3/W4 动作链敏感性） | 呈现页 `site/cosmos3.html` + `site/cosmos3-demo/` |
-
-以下为 Cosmos3 篇说明（CR2 篇各目录自带 README）。
-
----
-
 # Cosmos3-Edge 评测
 
 `nvidia/Cosmos3-Edge`（4B 全模态世界模型 = 2B VL reasoner + rectified-flow 扩散专家，MoT 单塔）
@@ -30,8 +19,8 @@
 
 > **跨代对比**（Cosmos3-Edge 2B vs 上一代 CR2-8B 量化版：新一代 2B 在驾驶域显著输给上一代 8B 的
 > INT8/INT4，−9.2 pts、p=0.0115）是"CR2-8B→Cosmos3"两代 Cosmos 家族模型的同尺测量。2026-11-15
-> 仓库按模型家族重组后，**完整 n=184 benchmark 两侧数据都在本仓**：CR2 侧 `accuracy/driving/`
-> （canonical）、Cosmos3 侧 `cosmos3/`；呈现页 `site/cosmos3.html`。逐 clip 原始视频涉 gated
+> 仓库按模型家族重组后，**完整 n=184 benchmark 两侧数据都在本仓**：CR2 侧 `../../cr2/eval/accuracy/driving/`
+> （canonical）、Cosmos3 侧 `reasoning/`；呈现页 `site/cosmos3.html`。逐 clip 原始视频涉 gated
 > PhysicalAI-AV，不入库（两侧仅存模型输出 JSON 与聚合结果）。
 
 ## Policy 侧：DROID 动作链端到端打通（2026-10-16 W2 打通 / 2026-10-19 W3 实测边界）

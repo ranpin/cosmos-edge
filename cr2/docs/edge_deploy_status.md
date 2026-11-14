@@ -292,7 +292,7 @@ decode 真正的杠杆只剩**减少字节数**（优化 A：量化 lm_head，�
 扩散动作专家，MoT 单塔）。它在 TRTEdge 0.10.1 官方支持矩阵里仅 **Compatible 档**（Orin 是
 JetPack 6.2 / CUDA 12.6 / TRT 10.7；Official 是 JetPack 7.2 / CUDA 13 / TRT 11）。工程记录见
 [PROBLEMS.md](PROBLEMS.md) §K/§L，方法见 [METHODOLOGY.md](METHODOLOGY.md) §6，呈现见
-[站点跨代对比专篇](../site/cosmos3.html)（2026-11-15 起在本仓）。
+[站点跨代对比专篇](../../site/cosmos3.html)（2026-11-15 起在本仓）。
 
 ### 部署：六道 JetPack 6.2 兼容墙（K1–K6）逐个打通
 
@@ -325,7 +325,7 @@ K4/K6 **同源同解**（都是 TRT≥11 才认识的算子），用基础 ONNX 
 - **结论（跨代验证）**：新一代 2B（Cosmos3，2026-07）在驾驶域**显著输给**上一代 8B 的量化版
   （INT4 50.5% / INT8 47.8%）——"缩小模型不免费、量化几乎免费"在**第二个模型家族**上成立
   （与上文「模型规模 Pareto」同向，但此处是跨家族、且对照的是量化后的大模型）。
-- 图 `docs/figures/cosmos3_crossgen.png`（`eval/cosmos3/cosmos3_viz.py` 从原始输出重算 k=78/184，非手填）。
+- 图 `site/figures/cosmos3/cosmos3_crossgen.png`（`cosmos3/eval/reasoning/cosmos3_viz.py` 从原始输出重算 k=78/184，非手填）。
 
 ### Policy 动作链：部署打通 + 单帧「帧无关」边界
 
@@ -339,8 +339,8 @@ Policy-DROID（`nvidia/Cosmos3-Edge-Policy-DROID`，机器人操作 WAM）四组
   **单帧 turnkey 路径「帧无关」**——vision-only 单帧 conditioning（`use_state=False`，无本体状态锚点）
   的能力边界，**非引擎 bug**。且 Edge 输出（10 维 midtrain rot6d + quantile 归一化）与社区 lerobot GT
   （7 维笛卡尔）表示/归一化不同、无法直接对照。⇒ demo 锚定 reasoning 侧。
-- 图 `docs/figures/cosmos3_policy_frame_insensitive.png`；复现 `eval/cosmos3/w3_frame_sensitivity.py`
-  （证据 `eval/cosmos3/w3_actions/` 已入库）。
+- 图 `site/figures/cosmos3/cosmos3_policy_frame_insensitive.png`；复现 `cosmos3/eval/policy/w3_frame_sensitivity.py`
+  （证据 `cosmos3/eval/policy/w3_actions/` 已入库）。
 
 ## lm_head 量化：预测 +23%，但在 T4 上无法完成（2026-07-26）
 

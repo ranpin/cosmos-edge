@@ -6,9 +6,9 @@
 
 > **迁移说明（2026-11-03 迁入本仓；2026-11-15 CR2 篇亦迁入）**：本目录原在 alpamayo-edge
 > （2026-10-29 拆仓时跨代对比曾留彼处）。CR2-8B 侧对照数据以 `ref_cr2/` 副本随迁；2026-11-15
-> 按 NVIDIA 模型家族重组仓库后，CR2 全套资产的 canonical 已在本仓 `eval/accuracy/driving/`
-> （`ref_cr2/` 副本按实测记录铁律原样保留、不再回写）。policy 动作链（W3/W4）在本仓
-> `eval/policy/`；reasoning 自由描述 demo 见
+> 按 NVIDIA 模型家族重组仓库后，CR2 全套资产的 canonical 已在本仓 `cr2/eval/accuracy/driving/`
+> （`ref_cr2/` 副本按实测记录铁律原样保留、不再回写）。policy 动作链（W3/W4）在本篇
+> `../policy/`；reasoning 自由描述 demo 见
 > <https://ranpin.github.io/cosmos-edge/cosmos3-demo/>。
 
 ## Reasoner 侧：n=184 驾驶域基准（2026-10-16，W2）
@@ -35,6 +35,6 @@ runtime 用引擎目录内自己的 chat template）。
 | 文件 | 说明 |
 |---|---|
 | `cosmos3_edge_fp16_outputs_n184.json` | reasoner n=184 原始输出（实测记录） |
-| `cosmos3_viz.py` | 跨代对比图 + policy 帧不敏感图生成（`FIG_THEME=dark` 出暗色变体，输出 `site/figures[/dark]/`） |
-| `ref_cr2/` | CR2-8B 侧对照数据副本（manifest_n184 / driving_results / orin_fp16_outputs_n184 / score_mc.py），2026-11-03 逐字节拷贝自 alpamayo-edge；2026-11-15 起 canonical 在本仓 `eval/accuracy/driving/` |
+| `cosmos3_viz.py` | 跨代对比图 + policy 帧不敏感图生成（`FIG_THEME=dark` 出暗色变体，输出 `site/figures/cosmos3[/dark]/`） |
+| `ref_cr2/` | CR2-8B 侧对照数据副本（manifest_n184 / driving_results / orin_fp16_outputs_n184 / score_mc.py），2026-11-03 逐字节拷贝自 alpamayo-edge；2026-11-15 起 canonical 在本仓 `cr2/eval/accuracy/driving/` |
 | 打分 | `ref_cr2/score_mc.py` 的解析/Wilson/McNemar（与 CR2 篇打分同源同实现） |

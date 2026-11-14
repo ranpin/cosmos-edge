@@ -15,12 +15,12 @@ engines/
 *.trt
 
 # 运行产物
-/outputs/*
-!/outputs/*.sha256
+/cr2/outputs/*
+!/cr2/outputs/*.sha256
 logs/
 *.log
 # 实测日志豁免（pareto 13 件是已发布数字的原始证据，必须入库）
-!eval/accuracy/driving/pareto/*.log
+!cr2/eval/accuracy/driving/pareto/*.log
 
 # OS / 编辑器
 .DS_Store

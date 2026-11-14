@@ -6,7 +6,7 @@
 兼容墙**，逐道打通。
 
 > 本页从 alpamayo-edge 的 Phase W 报告拆分而来。**跨代精度对比**（Cosmos3-Edge 2B vs 上一代 CR2-8B 量化版，
-> n=184 驾驶域，「缩小不免费、量化几乎免费」）见本仓 [site/cosmos3.html](../site/cosmos3.html)——CR2 篇
+> n=184 驾驶域，「缩小不免费、量化几乎免费」）见本仓 [site/cosmos3.html](../../site/cosmos3.html)——CR2 篇
 > 迁入本仓后，CR2 侧对照数据的 canonical 即本仓 `eval/accuracy/driving/`；**policy 动作链评测**（W3 帧敏感性 /
 > W4 conditioning 敏感性）见本仓 [`eval/README.md`](../eval/README.md)；逐问题工程记录（现象 → 根因 → 解决 → 教训）
 > 见 [PROBLEMS.md](PROBLEMS.md)。

@@ -27,7 +27,7 @@ description: 把 HuggingFace LLM/VLM 用 NVIDIA TensorRT-Edge-LLM 量化(INT4 AW
 
 ## 阶段 1 — 云端量化（Kaggle 2×T4=32GB，一次性）
 
-脚本参考 `cloud/kaggle_cosmos_only.py`。关键坑与解法：
+脚本参考 `cr2/cloud/kaggle_cosmos_only.py`。关键坑与解法：
 
 | 坑 | 解法 |
 |---|---|

@@ -7,16 +7,16 @@ Both figures derive every number from committed data — nothing is hardcoded:
     reusing score_mc's parse_choice / wilson / mcnemar_exact so it is
     methodologically identical to RESULTS.json.
   * CR2-8B FP16/INT8/INT4 numbers come from ref_cr2/driving_results.json.
-  * Policy frame-insensitivity comes from eval/policy/w3_actions/f{20,60,100,140}_act.json.
+  * Policy frame-insensitivity comes from cosmos3/eval/policy/w3_actions/f{20,60,100,140}_act.json.
 
 ref_cr2/ = verbatim copies of the CR2-side reference data from
 ranpin/alpamayo-edge (manifest / driving RESULTS / CR2 FP16 n184 outputs /
 score_mc.py) so these figures re-render self-contained; canonical CR2 data
 lives in alpamayo-edge.
 
-Run:  python eval/cosmos3/cosmos3_viz.py   (FIG_THEME=dark for the dark variant)
-Out:  site/figures/cosmos3_crossgen.png
-      site/figures/cosmos3_policy_frame_insensitive.png   (+ site/figures/dark/)
+Run:  python cosmos3/eval/reasoning/cosmos3_viz.py   (FIG_THEME=dark for the dark variant)
+Out:  site/figures/cosmos3/cosmos3_crossgen.png
+      site/figures/cosmos3/cosmos3_policy_frame_insensitive.png   (+ site/figures/cosmos3/dark/)
 """
 import itertools
 import json
@@ -26,8 +26,8 @@ import sys
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.join(HERE, "..", "..")
-sys.path.insert(0, os.path.join(ROOT, "eval"))     # paper_style
+REPO = os.path.join(HERE, "..", "..", "..")       # repo root
+sys.path.insert(0, os.path.join(HERE, ".."))       # paper_style (cosmos3/eval)
 sys.path.insert(0, os.path.join(HERE, "ref_cr2"))  # score_mc (CR2 reference copy)
 from paper_style import (apply, bar_kw, label_bars, C, DARK, ANNOT, C4, C8,
                          CF, WIDTH_FULL)  # noqa: E402
@@ -36,7 +36,7 @@ from score_mc import load_run, mcnemar_exact, parse_choice, wilson  # noqa: E402
 apply()
 import matplotlib.pyplot as plt  # noqa: E402
 
-OUT = os.path.join(ROOT, "site", "figures", "dark") if DARK else os.path.join(ROOT, "site", "figures")
+OUT = os.path.join(REPO, "site", "figures", "cosmos3", "dark") if DARK else os.path.join(REPO, "site", "figures", "cosmos3")
 os.makedirs(OUT, exist_ok=True)
 C3 = C("#7c3aed")  # Cosmos3-Edge violet (distinct from the CR2-8B trio)
 
@@ -115,7 +115,7 @@ def fig_crossgen():
 def load_actions():
     acts = {}
     for n in (20, 60, 100, 140):
-        d = json.load(open(os.path.join(ROOT, "eval", "policy", "w3_actions", f"f{n}_act.json")))
+        d = json.load(open(os.path.join(HERE, "..", "policy", "w3_actions", f"f{n}_act.json")))
         acts[n] = np.asarray(d["action"], dtype=float)  # [16,10]
     return acts
 

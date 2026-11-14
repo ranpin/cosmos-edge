@@ -55,7 +55,7 @@ n=210 里最长的一题（`request_idx 94`，448×358 + 316 字符题干）= **
 此外 ViT 第 8/16/24 层的 **3 路 deepstack 特征**（`num_deepstack_features=3`）作为 llm.engine 的**额外输入**注入前 3 层。
 
 **我们不训练、不微调**，只做训练后量化 + 部署 + 评测。本轨道（CR2-8B 量化）不输出轨迹/控制量；轨迹输出属后续
-加入的 VLA 轨道——Alpamayo-R1/1.5（VLM backbone 与 CR2-8B 同族），已跑通并上线 demo（见本仓站点报告页 [cr2.html](../site/cr2.html) §1.13 与 [alpamayo-edge 仓](https://github.com/ranpin/alpamayo-edge) `eval/r1/`）。
+加入的 VLA 轨道——Alpamayo-R1/1.5（VLM backbone 与 CR2-8B 同族），已跑通并上线 demo（见本仓站点报告页 [cr2.html](../../site/cr2.html) §1.13 与 [alpamayo-edge 仓](https://github.com/ranpin/alpamayo-edge) `eval/r1/`）。
 
 ## 0.1 模型结构与优化落点（每个模块的参数 / 字节 / 时间账）
 
@@ -132,7 +132,7 @@ n=210 里最长的一题（`request_idx 94`，448×358 + 316 字符题干）= **
 | **模型（Phase W）** | `nvidia/Cosmos3-Edge`（4B 世界动作模型 = 2B VL reasoner + rectified-flow 扩散动作专家，MoT 单塔）+ `nvidia/Cosmos3-Edge-Policy-DROID`（机器人操作 policy 权重） | https://huggingface.co/nvidia/Cosmos3-Edge 、…/Cosmos3-Edge-Policy-DROID（经 hf-mirror 下载 ~9.2G） | NVIDIA 预训练，只推理部署、不训练。第二部署目标，见 §6 |
 | **量化校准集** | `cnn_dailymail` config **3.0.0**，split `train` 前 **512** 篇 `article` | https://huggingface.co/datasets/cnn_dailymail | 实测 `quantize.py`；纯文本路径，非驾驶域（见 §4） |
 | **精度探针集** | 12 条手写 prompt（无标注） | `eval/accuracy/prompts_greedy.json`（本仓库） | 非标准 benchmark |
-| **policy 实测数据（Phase W）** | `lerobot/droid_100` ep0（"Put the marker in the pot"）帧 f20/60/100/140 | https://huggingface.co/datasets/lerobot/droid_100（聚合视频 `file-000.mp4`，帧可再生，取数命令见 `eval/cosmos3/w3_frame_sensitivity.py` 头注） | 仅用于 policy 帧敏感性复测，非精度基准 |
+| **policy 实测数据（Phase W）** | `lerobot/droid_100` ep0（"Put the marker in the pot"）帧 f20/60/100/140 | https://huggingface.co/datasets/lerobot/droid_100（聚合视频 `file-000.mp4`，帧可再生，取数命令见 `cosmos3/eval/policy/w3_frame_sensitivity.py` 头注） | 仅用于 policy 帧敏感性复测，非精度基准 |
 | **量化/部署框架** | NVIDIA **TensorRT-Edge-LLM v0.9.0** @ `1ac0f2b9…`（2026-07-02） | https://github.com/NVIDIA/TensorRT-Edge-LLM | Orin 建引擎/运行即此 commit（实测 `git rev-parse`）。**Kaggle 量化/导出用 `git clone --depth 1`（main@运行日，未 pin）** → 建议同 pin v0.9.0 |
 | 部署框架（Phase W） | NVIDIA **TensorRT-Edge-LLM v0.10.1**（Cosmos3-Edge 官方支持的最低版本系） | 同上，`git clone --branch v0.10.1` | 自建在 `trtedge-0.10.1/`（共享 0.9.0 安装不动）；`-DBUILD_EXPERIMENTAL_MODELS=ON`、`-DENABLE_CUTE_DSL=fmha`，见 §6 |
 | 量化后端 | NVIDIA TensorRT-Model-Optimizer (ModelOpt)，随 TRTEdge `.[tools]` 装 | 同上（依赖） | 具体版本随 TRTEdge 依赖，未单独 pin |
@@ -163,7 +163,7 @@ n=210 里最长的一题（`request_idx 94`，448×358 + 316 字符题干）= **
 3. **性能基准的输入** —— `llm_bench` 用**合成 token 序列**(指定 `inputLen`/`pastKVLen`),测的是纯 prefill/decode 算力,与内容无关,是延迟基准的标准做法。
 4. **policy 帧敏感性实测数据（Phase W）** —— `lerobot/droid_100` ep0（"Put the marker in the pot"）的
    4 帧 f20/60/100/140，仅用于 policy 单帧 turnkey 路径的跨帧复测（非精度基准、无标答对照）。帧/视频
-   gitignore、可再生，取数命令见 `eval/cosmos3/w3_frame_sensitivity.py` 头注。
+   gitignore、可再生，取数命令见 `cosmos3/eval/policy/w3_frame_sensitivity.py` 头注。
 
 > 说明:主指标已是**带标注的 MC 任务正确率**(Cosmos-Reason1-Benchmark);perplexity/一致率为细粒度辅助。局限:非驾驶域(具身机器人)、仅 210 题(二选一 MC,CI 仍 ±5.7)。
 
@@ -337,7 +337,7 @@ llm_bench --engineDir engines/int4/llm --mode decode  --pastKVLen 512 --iteratio
 
 第二部署目标 Cosmos3-Edge 的方法细节。**结果**见 [edge_deploy_status.md](edge_deploy_status.md) 的
 Phase W 专节，**工程踩坑**见 [PROBLEMS.md](PROBLEMS.md) §K/§L，**呈现**见
-[站点跨代对比专篇](../site/cosmos3.html)（2026-11-15 起在本仓）。
+[站点跨代对比专篇](../../site/cosmos3.html)（2026-11-15 起在本仓）。
 
 ### 6.1 分解注意力 / RoPE 导出补丁（对「TRT-11-only 算子墙」的通用武器）
 
