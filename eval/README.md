@@ -1,12 +1,23 @@
+# 评测总览（Cosmos 家族两篇）
+
+| 篇 | 目录 | 内容 |
+|---|---|---|
+| **CR2 篇**（Cosmos-Reason2-8B/2B 量化部署） | `accuracy/`（n210/510 基准 + 校准消融 + 驾驶域 n184 + 分辨率 Pareto）、`perf/`、`profile/`、`kernels/`、`vision/`、`io_example/` + 根级 viz/分析脚本 | 报告页 `site/cr2.html`；方法 `docs/METHODOLOGY.md` |
+| **Cosmos3 篇**（Cosmos3-Edge 世界模型） | `cosmos3/`（reasoner n184 跨代对比）、`policy/`（W3/W4 动作链敏感性） | 呈现页 `site/cosmos3.html` + `site/cosmos3-demo/` |
+
+以下为 Cosmos3 篇说明（CR2 篇各目录自带 README）。
+
+---
+
 # Cosmos3-Edge 评测
 
 `nvidia/Cosmos3-Edge`（4B 全模态世界模型 = 2B VL reasoner + rectified-flow 扩散专家，MoT 单塔）
 在 Jetson AGX Orin 上的两条能力线评测。部署链路与 JetPack 6.2 兼容墙、policy 动作链能力边界的
-完整技术记录见本仓 [`docs/PROBLEMS.md`](../docs/PROBLEMS.md) §K/§L（迁自 alpamayo-edge）与
+完整技术记录见本仓 [`docs/PROBLEMS.md`](../docs/PROBLEMS.md) §K/§L 与
 [`docs/DEPLOYMENT.md`](../docs/DEPLOYMENT.md)。
 
 🎬 **在线 Demo（reasoning 侧自由场景描述，真实 Orin 推理输出）**：
-<https://ranpin.github.io/cosmos3-edge/cosmos3-demo/>（源在 `site/cosmos3-demo/`）
+<https://ranpin.github.io/cosmos-edge/cosmos3-demo/>（源在 `site/cosmos3-demo/`）
 
 ## Reasoner 侧：n=184 驾驶域基准（2026-10-16，W2）
 
@@ -18,9 +29,10 @@
 - 引擎：FP16，llm 3.7G + visual 940M（分解注意力版）。
 
 > **跨代对比**（Cosmos3-Edge 2B vs 上一代 CR2-8B 量化版：新一代 2B 在驾驶域显著输给上一代 8B 的
-> INT8/INT4，−9.2 pts、p=0.0115）属"CR2-8B→Cosmos3→R1"研究主线叙事，**完整 n=184 benchmark + 跨代
-> 对比表 + 逐 clip 数据留在 [alpamayo-edge](https://github.com/ranpin/alpamayo-edge)**（涉 gated
-> PhysicalAI-AV，不在本仓重复）。本仓只引用 Cosmos3 自身的聚合准确率。
+> INT8/INT4，−9.2 pts、p=0.0115）是"CR2-8B→Cosmos3"两代 Cosmos 家族模型的同尺测量。2026-11-15
+> 仓库按模型家族重组后，**完整 n=184 benchmark 两侧数据都在本仓**：CR2 侧 `accuracy/driving/`
+> （canonical）、Cosmos3 侧 `cosmos3/`；呈现页 `site/cosmos3.html`。逐 clip 原始视频涉 gated
+> PhysicalAI-AV，不入库（两侧仅存模型输出 JSON 与聚合结果）。
 
 ## Policy 侧：DROID 动作链端到端打通（2026-10-16 W2 打通 / 2026-10-19 W3 实测边界）
 

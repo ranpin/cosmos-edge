@@ -1,83 +1,83 @@
-# Cosmos3-Edge
+# Cosmos-Edge
 
-**NVIDIA Cosmos3-Edge（4B 全模态世界模型）在 Jetson AGX Orin 上的边缘部署实证**——用 TensorRT-Edge-LLM
-把 reasoner 与扩散动作专家落成 Orin 引擎，覆盖两条能力线：**AV 驾驶场景理解（reasoning）** 与
-**DROID 机器人操作（policy 动作链）**。全部为 Orin 实机推理输出，非模拟。
+**NVIDIA Cosmos 家族模型在 Jetson AGX Orin（sm_87）上的边缘部署全史**——同一套 TensorRT-Edge-LLM
+管线与评测方法学量到家族两代模型上：**CR2 篇**（Cosmos-Reason2-8B/2B 推理 VLM 的 INT4/INT8 量化部署，
+方法学建立之地）与 **Cosmos3 篇**（Cosmos3-Edge 4B 全模态世界模型，跨代对比与 policy 能力边界）。
+全部为 Orin 实机实测，非模拟。零预算 · 零训练。
 
-🎬 **在线 Demo（reasoning 侧·真实驾驶场景自由描述）**：<https://ranpin.github.io/cosmos3-edge/cosmos3-demo/>
+🎬 **在线 Demo（Cosmos3-Edge 2B 驾驶场景自由描述，真实 Orin 推理输出）**：<https://ranpin.github.io/cosmos-edge/cosmos3-demo/>
 
-📊 **跨代精度对比专篇（n=184 驾驶域，Cosmos3-Edge 2B vs CR2-8B 三精度）**：<https://ranpin.github.io/cosmos3-edge/cosmos3.html>
+📊 **跨代精度对比专篇（n=184 驾驶域，Cosmos3-Edge 2B vs CR2-8B 三精度）**：<https://ranpin.github.io/cosmos-edge/cosmos3.html>
 
-> 本仓从 `ranpin/alpamayo-edge` 拆出，聚焦 Cosmos3-Edge 世界模型。**AV VLA（Alpamayo-R1）轨迹预测**
-> 与 **CR2-8B 量化**仍在 alpamayo-edge（那是"一套 TRTEdge 管线部署多代 NVIDIA Physical AI 模型"的
-> 研究主线）；Cosmos3 vs CR2-8B 的**跨代精度对比**（n=184 数据 + 呈现页）已于 2026-11-03 迁入本仓
-> （`eval/cosmos3/` + `site/cosmos3.html`，CR2 侧对照数据以 `ref_cr2/` 副本随迁）。
+📄 **CR2 篇主报告（8B 量化部署实战，图 1–22 / 表 1–13）**：<https://ranpin.github.io/cosmos-edge/cr2.html>
 
-## 模型
+> **仓库沿革**：2026-10-29 Cosmos3-Edge 工作自 alpamayo-edge 拆出独立成仓（cosmos3-edge）；
+> 2026-11-15 按 NVIDIA 模型家族重组——CR2 量化部署全套迁入本仓并改名 **cosmos-edge**。
+> Alpamayo 家族（R1 / 1.5 / 2-Edge 轨迹 VLA）在姊妹仓
+> [alpamayo-edge](https://github.com/ranpin/alpamayo-edge)；两仓共享设备资产（dog/goat 两台 Orin，
+> 布局见 [device_layout.md](https://github.com/ranpin/alpamayo-edge/blob/main/docs/device_layout.md)）
+> 与 TRTEdge 0.10.1 构建脚本（`scripts/orin/w0b_build_trtedge_0101.sh` 两仓并存）。
 
-Cosmos3-Edge = **2B VL reasoner + rectified-flow 扩散动作专家**（MoT 单塔，4B 全模态世界模型）。
-- **Reasoning**：图 + 文 → 场景理解 / 自由描述（AV 驾驶域）。
-- **Policy**：图 + 指令 + 状态 → 动作 chunk（官方权重仅 DROID 机器人操作域）。
+## 家族地图
+
+| | Cosmos 家族（本仓） | Alpamayo 家族（[alpamayo-edge](https://github.com/ranpin/alpamayo-edge)） |
+|---|---|---|
+| 模型 | Cosmos-Reason2-8B/2B（推理 VLM）、Cosmos3-Edge 4B（世界模型） | Alpamayo-R1-10B、1.5、2-Edge（AV 轨迹 VLA） |
+| 谱系关联 | CR2-8B **正是 Alpamayo 1.5 的 VLM backbone**；Cosmos3-Edge backbone **正是 Alpamayo2-Edge 的底座** | 建在 Cosmos 家族 backbone 之上的 AV 栈 |
+| 主线结论 | 「激进量化 + 保留大模型」（推理域）；跨代 2B 显著输 8B 量化版 | R1 backbone INT4「量化近乎免费」延伸到轨迹域；轨迹域「缩小免费」（2-Edge 2.65B ≈ R1 10B） |
 
 ## 核心结果
 
-### 1. AV Reasoning —— 已验证 works
+### CR2 篇 —— Cosmos-Reason2-8B/2B 量化部署（方法学建立）
 
-- **n=184 驾驶域基准：42.4% 正确率**（Wilson 95%CI [35.5, 49.6]），随机基线 12.5% ⇒ **3.4× chance**，
-  有真实场景理解力；184/184 全 EOS、零解析失败、字母分布均衡无坍缩。
-- **在线 demo**：4 个公开 sample clip 的自由场景描述（商业区白天 / 施工锥桶 / 夜间左转道 / 夜间 stop sign 行人），
-  真实 Orin 推理输出。
-- 协议与 CR2-8B 评测完全一致（同帧、同题、同标答、贪心、cap 12、6 帧 @448），唯一变量是模型；
-  **跨代对比结论**（新一代 2B 在驾驶域显著输给上一代 8B 量化版，McNemar p=0.0115）见
-  [跨代对比专篇](https://ranpin.github.io/cosmos3-edge/cosmos3.html)（本仓 `site/cosmos3.html`）。
+- **量化既是提速也是 32GB 边缘的唯一可部署方案**：FP16 引擎在 32GB Orin 上 build（峰值 54.8GB）与
+  载入双双 OOM；INT4 decode 比 FP16 快 2.66×、E2E 2.5×，引擎 4.8GB。
+- **量化基本无精度损失**（官方基准 n=210 + 自建驾驶域 n=184 双证据，McNemar 全不显著 + TOST 等价检验）；
+  **缩小模型不免费**：CR2-2B 掉 8.6–11.0 pts（p=0.005 显著）⇒ 部署策略 =「激进量化 + 保留大模型」。
+- **选型随负载形状翻转**：输出 token < 输入 token / 83 时 INT8 更快（n=210 基准实测 INT8 快 1.43×）。
+- **已到硬件上限**：roofline + kernel 级剖析 + 手写 GEMV 对照——decode 达可达带宽 97–100%，
+  手写 kernel 无空间；lm_head INT4 落地后 TPOT 再 +19.6%。
+- 报告页含 §1.13–1.14（R1 INT4 / Alpamayo2-Edge 跨代）两章时间线延伸，资产在 alpamayo-edge 仓。
 
-### 2. DROID Policy 动作链 —— 部署打通 + 诚实边界
+### Cosmos3 篇 —— Cosmos3-Edge 世界模型（跨代反例 + policy 边界）
 
-- 四组件引擎全部建成（und_prefill 2.7G / gen 2.7G / vae_encoder 292M / text_tokenizer 17M），
-  `cosmos3_policy_inference` 图 + prompt → action 冒烟通过：action shape **[1,16,10]**、160 值全 finite、
-  逐维有结构（非噪声），**5154 ms/policy round**（goat）。
-- 🔴 **诚实边界（W3 实测 / W4 复测修正）**：W2 冒烟是**部署管线验证**（分解引擎端到端跑通、产出结构合法动作），
-  **不是动作语义正确性验证**。W4 复测：turnkey 单帧路径输出**由 diffusion seed 主导（52%）**，
-  帧 / 文本 prompt / CFG 三个 conditioning 轴一致地只有 **1–2%**（seed 是 prompt 效应的 ~30×），
-  40 步去噪也不收敛 ⇒ 输出基本是「seed 去噪出的通用轨迹」，conditioning 弱耦合，**根因未定**
-  （我们的 gen cross-attention 分解补丁接线 vs 模型属性）。且 Edge 输出（10 维 midtrain rot6d + quantile
-  归一化）与社区 lerobot GT（7 维笛卡尔）表示/归一化不同、无法直接对照。⇒ policy 定位为
-  **「部署打通 + conditioning 弱耦合边界（根因未定）」**，demo 锚定已验证 works 的 reasoning 侧。
-
-## 快速开始
-
-推理引擎构建与 Orin 部署的完整步骤（六道 JetPack 6.2 兼容墙 + 分解注意力/RoPE 补丁）见
-[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)；reasoning 侧在线 demo（顶部链接）为真实 Orin 推理输出，
-n=184 基准的复现命令与产物见 `eval/`。推理需 Jetson AGX Orin 实机，无消费级一键入口。
-
-## 边缘部署要点
-
-- **TRTEdge 0.10.1**，Jetson AGX Orin（sm_87 / JetPack 6.2 / CUDA 12.6 / TRT 10.7）。
-- **JetPack 6.2 兼容墙**逐个打通；核心一道：policy 的 und_prefill/gen 把注意力/RoPE lower 成 ONNX 标准
-  `Attention`/`RotaryEmbedding` 算子（只有 TRT≥11 parser 认识），Orin TRT 10.7 报 "Cannot find plugin"
-  ⇒ 用**分解注意力补丁**（`scripts/orin/apply_policy_decomposed_patch.py`：GQA 折批 + arange 下三角 causal
-  掩码 + rotate_half RoPE，恒等 gather 保 position_ids 防 DCE）打穿，先经 `test_policy_decomposed.py`
-  数值对拍（attention vs SDPA err~1e-7、rope vs LLaMA 公式 err=0）再导出。
-- ViT 注意力在 JetPack 6.2 无 legacy 后端（CuTe DSL 预编译件只有 sm_87+cuda13），是 reasoning visual
-  引擎的另一道墙。**完整六道兼容墙、分解注意力/RoPE 补丁与动作表示见 [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**。
+- **AV reasoning 真实可用**：n=184 驾驶域 42.4%（3.4× 随机基线），在线 demo 为真实 Orin 输出。
+- **跨代反例**：新一代 2B reasoner 在驾驶域**显著输给**上一代 8B 的量化版（−9.2 pts，p=0.0115）
+  ⇒「缩小不免费、量化几乎免费」在第二个模型上同向成立。
+- **DROID policy 动作链部署打通 + 诚实边界**：四组件引擎建成、冒烟通过（action [1,16,10] 全 finite）；
+  但 W4 实测 turnkey 输出由 diffusion seed 主导（52%）、conditioning 三轴仅 1–2%，根因未定
+  ⇒ 定位为「部署打通 + conditioning 弱耦合边界」，demo 锚定 reasoning 侧。
 
 ## 仓库结构与文档导航
 
 ```
-eval/cosmos3/       reasoner n=184 驾驶域跨代对比（原始输出 + viz 脚本 + ref_cr2/ CR2 对照数据副本）
-eval/policy/        DROID 操作评测：W3 帧敏感性 + W4 conditioning 敏感性（脚本 + 证据 JSON）
-scripts/orin/       Orin 部署脚本：TRTEdge build / reasoning+policy engine build / 分解注意力补丁
+site/cr2.html       CR2 篇主报告（gh-pages 源；图 1–22 / 表 1–13）
 site/cosmos3.html   跨代精度对比专篇（gh-pages 源）
-site/cosmos3-demo/  reasoning 自由描述 demo（gh-pages 源，4 公开 clip）
-site/figures/       站点插图（亮色 + dark/ 暗色变体，FIG_THEME=dark 重渲染）
-docs/DEPLOYMENT.md  部署细节：六道 JetPack 6.2 兼容墙 + 分解注意力/RoPE 补丁 + 动作表示
-docs/PROBLEMS.md    工程问题记录（§K/§L，迁自 alpamayo-edge）：现象 → 根因 → 解决 → 教训
+site/cosmos3-demo/  Cosmos3 reasoning 自由描述 demo（gh-pages 源，4 公开 clip）
+cloud/              CR2 云端量化脚本（Kaggle T4×2：INT4 AWQ / INT8 SQ / lm_head / 2B）
+eval/               评测资产总览见 eval/README.md（CR2 篇 accuracy/perf/profile/kernels/vision + Cosmos3 篇 cosmos3/policy）
+data/               驾驶域 n=184 评测集构建（PhysicalAI-AV，gated）
+scripts/orin/       Orin 设备脚本（CR2 引擎构建/功耗/Pareto + Cosmos3 六道墙补丁链）
+docs/METHODOLOGY.md 方法与可复现（模型/数据/指标/校准集口径）
+docs/PROBLEMS.md    工程问题记录 §A–L（现象 → 根因 → 解决 → 教训；§M 在 alpamayo-edge）
+docs/DEPLOYMENT.md  Cosmos3-Edge 部署细节（六道 JetPack 6.2 兼容墙 + 分解注意力/RoPE 补丁）
+docs/edge_deploy_status.md  CR2 篇结果报告（指标全表）
+docs/orin_build_notes.md    CR2 篇工程日志（构建配方 / FMHA 根因 / 复现命令）
 ```
+
+## 边缘部署要点
+
+- **TRTEdge**：CR2 篇 0.9.0→0.10.1，Cosmos3 篇 0.10.1（JetPack 6.2 属 Compatible 档，0.11+ 已删该行）。
+- **Jetson Orin sm_87 量化选项空间已穷举**：骨干 int4_awq/int8_sq、lm_head int4_awq 可用；
+  视觉编码器/KV cache 官方仅 fp8（sm_87 无）⇒ W4A8 与 fp8 路线在此硬件上不存在（METHODOLOGY §3.5）。
+- Cosmos3 的六道 JetPack 6.2 兼容墙与分解注意力/RoPE 补丁见 [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)。
 
 ## 许可与数据来源
 
 - 代码 **MIT**（见 LICENSE）。
-- reasoning demo 帧取自 **dgural 公开样本**（NVIDIA PhysicalAI-AV 的公开 100-clip 子集）。
-- n=184 基准的逐 clip 数据涉及 gated `nvidia/PhysicalAI-Autonomous-Vehicles`；跨代对比数据与呈现页
-  已于 2026-11-03 自 alpamayo-edge 迁入本仓（`eval/cosmos3/` 原始输出 + `ref_cr2/` CR2 对照副本，
-  与 alpamayo-edge 已公开内容一致，canonical CR2 数据仍在 alpamayo-edge）。
+- 模型：`nvidia/Cosmos-Reason2-8B`/`-2B`（gated，已授权）、`nvidia/Cosmos3-Edge`（OpenMDW1.1，非 gated）。
+- 基准：官方 `nvidia/Cosmos-Reason1-Benchmark`（robovqa/robofail，CR2 无官方 benchmark）；
+  驾驶域 n=184 自建自 gated `nvidia/PhysicalAI-Autonomous-Vehicles`（人工核验标注，逐 clip 原始视频不入库）。
+- reasoning demo 帧取自 dgural 公开样本（PhysicalAI-AV 公开 100-clip 子集）。
+- `eval/cosmos3/ref_cr2/` 为 2026-11-03 迁移期的 CR2 对照数据副本；2026-11-15 起 canonical 在本仓
+  `eval/accuracy/driving/`，副本按实测记录铁律原样保留。
