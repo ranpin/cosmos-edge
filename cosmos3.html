@@ -110,6 +110,7 @@ footer a{color:var(--accent)}
   <ul>
     <li><strong>Reasoner 侧</strong>：n=184 ⇒ MDE ≈ 7 pts，更小差异测不出；驾驶域标注是 clip 级事件聚类、train split 无法排除训练见过（同 CR2 报告页 §1.11 边界，对跨代对照不受影响）。</li>
     <li><strong>帧必须缩到长边 448</strong>：原生 1920×1088 = 2040 token/帧，6 帧 12240 &gt; 引擎 maxInputLen 2048 会失败；缩后与 n=184 同口径。</li>
+    <li><strong>2B 量化臂缺失 = 工具链约束（2026-11-15 源码级核实，非未做）</strong>：本页矩阵为 8B×{FP16, INT8, INT4} + 2B×{FP16}。2B 的量化臂做不了：TRTEdge 0.10.1 的量化校准驱动对 cosmos3 架构零支持（<code>tensorrt_edgellm/quantization/</code> 模块无 cosmos3 命中、policy 导出签名仅 <code>dtype=fp16</code>、上游 0.12 changelog 亦未新增），且 reasoner text 塔是自定义 MoT 架构（Relu2MLP、非 Qwen 系）——R1 用过的「权重 repack 进受支持架构再量化」旁路在架构上不成立。因此「<strong>量化几乎免费」在 8B/10B 规模上已验证，2B 规模上的量化行为未测</strong>。方向推断（非实测）：CR2 家族先例中 2B INT4 比 8B INT4 再低 8.6 pts（p=0.005），小模型对量化通常更敏感——若 Cosmos3-2B 同理，跨代差只会更大，本页结论方向不变。侦察证据清单见 <code>cosmos3/eval/reasoning/README.md</code>。</li>
   </ul>
   <p style="font-size:13px;color:var(--muted)">Cosmos3-Edge 的部署打通（六道 JetPack 6.2 兼容墙、分解注意力/RoPE 补丁）见本仓 <a href="https://github.com/ranpin/cosmos-edge/blob/main/cosmos3/docs/DEPLOYMENT.md" target="_blank" rel="noopener" style="color:var(--accent)">docs/DEPLOYMENT.md</a>；policy 动作链（DROID 机器人操作，部署打通 + conditioning 弱耦合边界）见 <a href="https://github.com/ranpin/cosmos-edge/tree/main/cosmos3/eval/policy" target="_blank" rel="noopener" style="color:var(--accent)">eval/policy/</a>。</p>
 
