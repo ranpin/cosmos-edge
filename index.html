@@ -85,7 +85,7 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-
       <h2>Cosmos3 篇 · Cosmos3-Edge 4B</h2>
       <div class="sub">全模态世界模型（2B VL reasoner + 扩散动作专家）</div>
       <ul>
-        <li>AV reasoning 真实可用：驾驶域 n=184 <strong>42.4%</strong>（3.4× 随机基线），demo 为真实 Orin 输出</li>
+        <li>AV reasoning 达 3.4× 随机基线：驾驶域 n=184 MC <strong>42.4%</strong>（口径用作同条件跨代对比），自由描述质量见 demo（真实 Orin 输出）</li>
         <li><strong>跨代反例</strong>：新一代 2B 显著输给上一代 8B 量化版（−9.2 pts，p=0.0115）⇒「缩小不免费、量化几乎免费」第二个模型上同向成立</li>
         <li>DROID policy 部署打通，但输出由 <strong>seed 主导（52%）</strong>、conditioning 仅 1–2% ⇒ 诚实边界：根因未定</li>
         <li>谱系：Cosmos3-Edge backbone 正是 <strong>Alpamayo2-Edge 的底座</strong></li>
