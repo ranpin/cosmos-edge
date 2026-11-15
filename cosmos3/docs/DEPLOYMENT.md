@@ -51,6 +51,24 @@ lower 成**只有 TRT≥11 parser 认识**的算子。解法 = 在导出前把�
 脚本：`scripts/orin/apply_policy_decomposed_patch.py`（policy）、`scripts/orin/apply_decomposed_attn_patch.py`
 （visual）、`scripts/orin/test_policy_decomposed.py`（对拍）。
 
+### 补丁的性能口径（诚实边界）
+
+分解补丁**没有、也无法**在 Orin JetPack 6.2 上量化对比原生 FMHA 插件的性能——原生路径在此硬件上
+不存在（§一 的 ViT 注意力三面受堵：CuTe DSL 预编译件无 sm_87+cuda12、TRT_Attention 需 TRT≥11），
+「补丁带来的性能损失」没有可测基线。能给的口径分三层：
+
+1. **理论开销（方向确定、量级未测）**：分解实现用基础 ONNX 算子替代 fused FMHA kernel——掩码物化
+   （S×S 额外读写）+ 多个小 GEMM 替代单 kernel（launch 开销、无 flash 式 SRAM tiling），方向上必然
+   慢于原生 FMHA。
+2. **实测可用性（补丁下的绝对时延，无对照臂）**：reasoning 引擎 n=184×6 帧全部推理完成（184/184
+   EOS、零解析失败）；policy 四组件引擎建成 + 冒烟通过（action [1,16,10] 全 finite、5154 ms/round、
+   4 步扩散）。正确性与可用性已证，性能数字只说明「补丁下能跑」，不说明「比原生慢多少」。
+3. **社区旁证（不可比）**：Cosmos3-Edge 在 A10G（int8wo）与 Blackwell（INT4-AWQ）有部署先例，
+   硬件与工具链版本均不同，不能作为本补丁代价的对照。
+
+真正量化补丁代价需要在原生 FMHA 可用的硬件代（Thor / JetPack 7.2，TRT≥11 或 CuTe DSL cuda13
+预编译件）上做同输入对照，超出本项目范围。**补丁的目标是「打穿墙」，不是「性能优化」。**
+
 ## 三、动作表示 / 归一化 / state（cosmos-framework 权威定义）
 
 - **表示**：Edge 用 `midtrain` 10 维 = [eef_pos(3) + rot6d(6) + gripper(1)]、**相对位姿**；后处理链
