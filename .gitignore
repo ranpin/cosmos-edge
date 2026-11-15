@@ -26,3 +26,6 @@ logs/
 .DS_Store
 .idea/
 .vscode/
+
+# W3 DROID 工作数据（170M，可从公开 lerobot/droid_100 ep000 重建；2026-11-15 自 alpamayo-edge data/ 迁入，沿用其「帧为可重建大件不入库」惯例）
+cosmos3/eval/droid_demo/
