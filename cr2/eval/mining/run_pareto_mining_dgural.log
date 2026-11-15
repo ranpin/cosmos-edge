@@ -1,0 +1,157 @@
+[15:32:49.170] [INFO] [llm_inference.cpp:323:parseLLMInferenceArgs] args.inputFile: mining_demo/mining_input.json
+[15:32:49.171] [INFO] [llm_inference.cpp:329:parseLLMInferenceArgs] args.engineDir: engines/8b_lmhead/llm
+[15:32:49.171] [INFO] [llm_inference.cpp:337:parseLLMInferenceArgs] args.multimodalEngineDir: engines/int4/visual
+[15:32:49.171] [INFO] [llm_inference.cpp:345:parseLLMInferenceArgs] args.outputFile: mining_demo/mining_out.json
+[15:32:49.171] [INFO] [trtUtils.h:63:loadEdgellmPluginLib] EDGELLM_PLUGIN_PATH: /home/vision/TensorRT-Edge-LLM/build_orin/libNvInfer_edgellm_plugin.so
+[15:32:49.508] [INFO] [llm_inference.cpp:494:main] Successfully parsed 0 LoRA weights from input file.
+[15:32:49.508] [INFO] [llm_inference.cpp:495:main] Successfully parsed 8 batches of requests from input file.
+[15:32:49.915] [INFO] [llmRuntimeUtils.cpp:557:loadEmbeddingTable] Loaded FP16 embedding: [151936, 4096]
+[15:32:49.915] [INFO] [llmEngineConfig.cpp:370:parseEngineConfig] reading engines/8b_lmhead/llm/config.json
+[15:32:49.915] [WARNING] [version.cpp:103:checkVersion] Model version 0.9.1 does not match runtime version 0.9.0. Consider re-exporting or re-building.
+[15:32:49.915] [INFO] [llmRuntimeUtils.cpp:271:collectRopeConfig] Collected rope config: RopeConfig:  type: MRope  rotaryScale: 1  rotaryTheta: 5e+06  partialRotaryFactor: 1  maxPositionEmbeddings: 262144
+[15:32:49.915] [INFO] [llmEngineConfig.cpp:529:parseEngineConfig] LLMEngineConfig{ hiddenSize=4096 vocabSize=151936 outputVocabSize=151936 numDecoderLayers=36 numAttentionLayers=36 numKVHeads=8 headDim=128 rotaryDim=128 maxBatch=4 maxInputLen=1024 maxKVCapacity=4096 pleEnabled=false numPleInputs=0 pleHiddenSize=0 useTrtNativeOps=false isSpecDecodeBase=false specDecodeType=0 loraRank=0 eosTokenIds=[151645,151643] }
+[15:32:49.915] [INFO] [engineExecutor.cpp:36:EngineExecutor] loading engine file: engines/8b_lmhead/llm/llm.engine
+[15:32:49.919] [INFO] [TensorRT] Loaded engine size: 3741 MiB
+[15:32:49.930] [WARNING] [TensorRT] Using an engine plan file across different models of devices is not recommended and is likely to affect performance or even cause errors.
+[15:32:51.402] [INFO] [TensorRT] [MS] Running engine with multi stream info
+[15:32:51.402] [INFO] [TensorRT] [MS] Number of aux streams is 2
+[15:32:51.402] [INFO] [TensorRT] [MS] Number of total worker streams is 3
+[15:32:51.402] [INFO] [TensorRT] [MS] The main stream provided by execute/enqueue calls is the first worker stream
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.403] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:51.404] [INFO] [attentionPlugin.cpp:327:AttentionPlugin] AttentionPlugin: FMHA supported for headSize=128, using FMHA for prefill + XQA for decode.
+[15:32:52.395] [INFO] [TensorRT] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +0, now: CPU 0, GPU 3723 (MiB)
+[15:32:52.395] [INFO] [engineExecutor.cpp:53:EngineExecutor] engine loaded successfully (81 I/O tensors)
+[15:32:52.682] [INFO] [llmInferenceRuntime.cpp:149:initializeCommon] Base EngineExecutor successfully loaded from engines/8b_lmhead/llm/llm.engine.
+[15:32:52.682] [INFO] [llmInferenceRuntime.cpp:160:initializeCommon] Runtime batch size set to: 4 (from engine bundle)
+[15:32:53.324] [INFO] [pipelineIO.cpp:305:createForLLM] Allocated 3 deepstack embeds tensors with shape [4, 1024, 4096]
+[15:32:53.367] [INFO] [llmInferenceRuntime.cpp:286:initializeCommon] Runtime tensors successfully allocated.
+[15:32:53.367] [INFO] [llmInferenceRuntime.cpp:314:initializeCommon] Start loading tokenizer from model directory: engines/8b_lmhead/llm
+[15:32:53.815] [INFO] [tokenizer.cpp:548:loadVocabulary] Loaded 151643 vocabulary tokens
+[15:32:53.963] [INFO] [tokenizer.cpp:108:loadFromHF] Loaded 26 special tokens
+[15:32:54.030] [INFO] [tokenizer.cpp:1023:loadChatTemplate] Successfully loaded chat template from engines/8b_lmhead/llm/processed_chat_template.json (for model: /tmp/edge/Cosmos-8b_int4_awq_lmh)
+[15:32:54.030] [INFO] [tokenizer.cpp:135:loadFromHF] Successfully loaded tokenizer from engines/8b_lmhead/llm (vocab_size=151669)
+[15:32:54.073] [INFO] [llmInferenceRuntime.cpp:316:initializeCommon] Tokenizer successfully loaded from model directory: engines/8b_lmhead/llm
+[15:32:54.073] [INFO] [llmInferenceRuntime.cpp:324:initializeCommon] Loaded 2 EOS token IDs from config
+[15:32:54.074] [INFO] [TensorRT] Loaded engine size: 1113 MiB
+[15:32:54.074] [WARNING] [TensorRT] Using an engine plan file across different models of devices is not recommended and is likely to affect performance or even cause errors.
+[15:32:54.620] [INFO] [TensorRT] [MS] Running engine with multi stream info
+[15:32:54.620] [INFO] [TensorRT] [MS] Number of aux streams is 3
+[15:32:54.620] [INFO] [TensorRT] [MS] Number of total worker streams is 4
+[15:32:54.620] [INFO] [TensorRT] [MS] The main stream provided by execute/enqueue calls is the first worker stream
+[15:32:55.059] [INFO] [TensorRT] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +0, now: CPU 0, GPU 4828 (MiB)
+[15:32:55.161] [INFO] [llmInferenceRuntime.cpp:345:operator()] Vision runner successfully initialized
+[15:32:55.162] [INFO] [llmInferenceRuntime.cpp:369:initializeCommon] Attempting to load Action runner from engines/int4/visual/action
+MmapReader: Cannot open file: engines/int4/visual/action/action.engine
+[15:32:55.162] [INFO] [llmInferenceRuntime.cpp:376:initializeCommon] Failed to load Action runner from engines/int4/visual/action: /home/vision/TensorRT-Edge-LLM/cpp/common/mmapReader.cpp:49: Failed to load file in MmapReader constructor
+[15:32:55.263] [INFO] [llmInferenceRuntime.cpp:423:initializeCommon] Setup shared execution context memory: 411043328 bytes (base requires: 411043328, strategy requires: 0, vision requires: 207652352, audio requires: 0, action requires: 0)
+[15:32:55.264] [INFO] [TensorRT] Switching optimization profile from: 0 to 1. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:32:56.069] [INFO] [engineExecutor.cpp:234:captureGraph] captured graph (hash=0xd59159f2267724e3)
+[15:32:56.121] [INFO] [engineExecutor.cpp:234:captureGraph] captured graph (hash=0x1372cf8976fa0ab8)
+[15:32:56.158] [INFO] [engineExecutor.cpp:234:captureGraph] captured graph (hash=0xd445810d7221ff95)
+[15:32:56.211] [INFO] [engineExecutor.cpp:234:captureGraph] captured graph (hash=0xd6cd4cf8bd6239c5)
+[15:32:56.211] [INFO] [decoderRegistry.cpp:89:captureCudaGraphs] Successfully captured decoding CUDA graphs for active decoding strategies.
+[15:32:56.211] [INFO] [llm_inference.cpp:633:main] Processing 8 batched requests...
+[15:32:56.211] [INFO] [llm_inference.cpp:643:main] Progress: 1/8 (12.500000%)
+[15:32:56.211] [INFO] [llmInferenceRuntime.cpp:1072:multiModalRuntimePreprocess] Processing vision inputs
+[15:32:56.304] [INFO] [TensorRT] Switching optimization profile from: 1 to 0. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:32:56.978] [INFO] [TensorRT] Switching optimization profile from: 0 to 1. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:32:58.883] [INFO] [llm_inference.cpp:643:main] Progress: 2/8 (25.000000%)
+[15:32:58.883] [INFO] [llmInferenceRuntime.cpp:1072:multiModalRuntimePreprocess] Processing vision inputs
+[15:32:58.903] [INFO] [TensorRT] Switching optimization profile from: 1 to 0. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:32:59.544] [INFO] [TensorRT] Switching optimization profile from: 0 to 1. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:01.449] [INFO] [llm_inference.cpp:643:main] Progress: 3/8 (37.500000%)
+[15:33:01.449] [INFO] [llmInferenceRuntime.cpp:1072:multiModalRuntimePreprocess] Processing vision inputs
+[15:33:01.468] [INFO] [TensorRT] Switching optimization profile from: 1 to 0. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:02.109] [INFO] [TensorRT] Switching optimization profile from: 0 to 1. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:03.963] [INFO] [llm_inference.cpp:643:main] Progress: 4/8 (50.000000%)
+[15:33:03.965] [INFO] [llmInferenceRuntime.cpp:1072:multiModalRuntimePreprocess] Processing vision inputs
+[15:33:03.984] [INFO] [TensorRT] Switching optimization profile from: 1 to 0. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:04.625] [INFO] [TensorRT] Switching optimization profile from: 0 to 1. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:06.532] [INFO] [llm_inference.cpp:643:main] Progress: 5/8 (62.500000%)
+[15:33:06.532] [INFO] [llmInferenceRuntime.cpp:1072:multiModalRuntimePreprocess] Processing vision inputs
+[15:33:06.551] [INFO] [TensorRT] Switching optimization profile from: 1 to 0. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:07.193] [INFO] [TensorRT] Switching optimization profile from: 0 to 1. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:08.834] [INFO] [llm_inference.cpp:643:main] Progress: 6/8 (75.000000%)
+[15:33:08.834] [INFO] [llmInferenceRuntime.cpp:1072:multiModalRuntimePreprocess] Processing vision inputs
+[15:33:08.853] [INFO] [TensorRT] Switching optimization profile from: 1 to 0. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:09.495] [INFO] [TensorRT] Switching optimization profile from: 0 to 1. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:11.243] [INFO] [llm_inference.cpp:643:main] Progress: 7/8 (87.500000%)
+[15:33:11.243] [INFO] [llmInferenceRuntime.cpp:1072:multiModalRuntimePreprocess] Processing vision inputs
+[15:33:11.262] [INFO] [TensorRT] Switching optimization profile from: 1 to 0. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:11.903] [INFO] [TensorRT] Switching optimization profile from: 0 to 1. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:13.808] [INFO] [llm_inference.cpp:643:main] Progress: 8/8 (100.000000%)
+[15:33:13.808] [INFO] [llmInferenceRuntime.cpp:1072:multiModalRuntimePreprocess] Processing vision inputs
+[15:33:13.828] [INFO] [TensorRT] Switching optimization profile from: 1 to 0. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:14.469] [INFO] [TensorRT] Switching optimization profile from: 0 to 1. Please ensure there are no enqueued operations pending in this context prior to switching profiles
+[15:33:16.373] [INFO] [llm_inference.cpp:982:main] Processing complete: 8/8 batched requests successful
+[15:33:16.374] [INFO] [llm_inference.cpp:1089:main] All responses exported to: mining_demo/mining_out.json

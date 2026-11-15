@@ -1,0 +1,5 @@
+PARETO mining_dgural launch 15:32:49 epoch=1794727969.146248030
+PARETO mining_dgural proc_start epoch=1794727976.224544185
+PARETO mining_dgural proc_end epoch=1794727997.092726959 exit=0
+[15:33:16.373] [INFO] [llm_inference.cpp:982:main] Processing complete: 8/8 batched requests successful
+PARETO mining_dgural pw_samples=81 DONE
