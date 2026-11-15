@@ -43,7 +43,8 @@ policy 能力边界）。全部为 Orin 实机实测，非模拟。零预算 · 
 
 - **AV reasoning 达 3.4× 随机基线**：n=184 驾驶域 MC 42.4%——该口径用作同条件跨代对比；自由描述质量见在线 demo（真实 Orin 输出）。
 - **跨代反例**：新一代 2B reasoner 在驾驶域**显著输给**上一代 8B 的量化版（−9.2 pts，p=0.0115）
-  ⇒「缩小不免费、量化几乎免费」在第二个模型上同向成立。
+  ⇒「缩小不免费、量化几乎免费」在第二个模型上同向成立（2B 量化臂因 TRTEdge 0.10.1
+  工具链约束缺失，源码级核实见 `cosmos3/eval/reasoning/README.md`）。
 - **DROID policy 动作链部署打通 + 诚实边界**：四组件引擎建成、冒烟通过（action [1,16,10] 全 finite）；
   但 W4 实测 turnkey 输出由 diffusion seed 主导（52%）、conditioning 三轴仅 1–2%，根因未定
   ⇒ 定位为「部署打通 + conditioning 弱耦合边界」，demo 锚定 reasoning 侧。
