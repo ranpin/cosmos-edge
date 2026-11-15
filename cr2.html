@@ -78,6 +78,7 @@ footer a{color:var(--accent)}
   <div class="tabs">
     <a class="tab" href="index.html">家族总览</a>
     <a class="tab active" href="cr2.html">CR2-8B 量化部署</a>
+    <a class="tab" href="cr2-demo/">CR2 挖掘 Demo</a>
     <a class="tab" href="cosmos3.html">Cosmos3 跨代对比</a>
     <a class="tab" href="https://ranpin.github.io/alpamayo-edge/r1-trajectory/">R1 轨迹 Demo</a>
   </div>
@@ -97,7 +98,7 @@ footer a{color:var(--accent)}
 
   <p style="font-size:13px;color:var(--muted);margin:10px 0 0">本页是 <a href="index.html" style="color:var(--accent)">cosmos-edge（Cosmos 家族边缘部署）</a>的 <strong>CR2 篇</strong>，按时间线记录 Cosmos-Reason2-8B/2B 的量化部署全程；§1.13–1.14 的 R1 / Alpamayo2-Edge 轨迹工作属姊妹仓 <a href="https://github.com/ranpin/alpamayo-edge" style="color:var(--accent)">alpamayo-edge（Alpamayo 家族）</a>，文中 <code>eval/r1/</code>、<code>eval/vla_gate4/</code> 等路径均在该仓。</p>
 
-  <p style="margin:14px 0"><a href="cosmos3-demo/" target="_blank" rel="noopener" style="display:inline-block;background:var(--accent);color:#fff;padding:9px 18px;border-radius:7px;text-decoration:none;font-weight:600;font-size:14.5px">🎬 在线 Demo · Cosmos3-Edge 2B 驾驶场景理解（真实 Orin 推理输出 · 本仓 Cosmos3 篇）</a></p>
+  <p style="margin:14px 0"><a href="cr2-demo/" target="_blank" rel="noopener" style="display:inline-block;background:var(--accent);color:#fff;padding:9px 18px;border-radius:7px;text-decoration:none;font-weight:600;font-size:14.5px;margin-right:10px">⛏️ 在线 Demo · CR2-8B INT4 离线批量场景挖掘（真实 Orin 输出）</a><a href="cosmos3-demo/" target="_blank" rel="noopener" style="display:inline-block;background:var(--accent);color:#fff;padding:9px 18px;border-radius:7px;text-decoration:none;font-weight:600;font-size:14.5px">🎬 在线 Demo · Cosmos3-Edge 2B 驾驶场景理解（真实 Orin 推理输出 · 本仓 Cosmos3 篇）</a></p>
 
   <h2>摘要</h2>
   <p>把 NVIDIA <strong>Cosmos-Reason2-8B</strong>（物理场景推理 VLM，非轨迹预测器，属"感知 + 推理 / 可解释"层）用 <strong>TensorRT-Edge-LLM</strong> 量化为 <strong>INT4 (AWQ)</strong> 与 <strong>INT8 (SmoothQuant)</strong>，部署到 <strong>Jetson Orin (sm_87)</strong> 端到端跑通推理；按标准服务指标（TTFT / TPOT / TPS / E2E）测性能功耗，并在<strong>官方 Cosmos-Reason1-Benchmark（带标准答案）</strong>实测量化对<strong>任务正确率</strong>的影响。<span style="color:var(--muted)">零预算 · 零训练 · 全 Orin。</span></p>
