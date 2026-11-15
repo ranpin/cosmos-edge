@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CR2-8B INT4 · 离线批量场景挖掘 Demo（Jetson Orin 真实推理）</title>
+<meta name="description" content="Cosmos-Reason2-8B INT4 部署在 Jetson Orin，对真实驾驶视频做离线批量场景挖掘：8 clip × 6 帧一次作业，输出结构化事件标签，实测吞吐与能耗。真实 Orin 推理输出。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>⛏️</text></svg>">
+<!-- 共享演示页外壳（配色/页头/章节/页脚统一，单一事实源在主站 public/demo-shell.css） -->
+<link rel="stylesheet" href="https://ranpin.github.io/demo-shell.css">
+<!-- 明暗主题：同步加载，首屏绘制前应用已存主题，避免闪烁 -->
+<script src="https://ranpin.github.io/theme.js"></script>
+<style>
+  .mn-badges{display:flex;flex-wrap:wrap;gap:8px;margin:.2rem 0 8px}
+  .mn-badge{background:var(--ds-accent-soft);color:var(--ds-accent-strong);border:1px solid var(--ds-accent-ring);
+    border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600}
+  .callout{padding:15px 17px;border-radius:8px;margin:16px 0;border-left:4px solid var(--ds-accent);
+    background:var(--ds-accent-soft);font-size:14.5px;line-height:1.7}
+  .callout.warn{border-left-color:var(--ds-warn);background:var(--ds-warn-soft)}
+  .callout .t{font-weight:700;font-size:13px;margin-bottom:4px;color:var(--ds-text)}
+  .callout a{color:var(--ds-accent)}
+  .sec-note{color:var(--ds-muted);font-size:13.5px;line-height:1.6;margin:0 0 16px}
+  .note{font-size:12.5px;color:var(--ds-muted);margin-top:10px;line-height:1.65}
+  /* 批作业总览条 */
+  .mn-overview{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:14px 0 20px}
+  .mn-ov{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:8px;padding:10px 16px;text-align:center;min-width:118px}
+  .mn-ov .v{font-size:19px;font-weight:700;color:var(--ds-accent-strong)}
+  .mn-ov .k{font-size:11.5px;color:var(--ds-muted);margin-top:2px}
+  /* clip 卡片 */
+  .mn-card{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:10px;padding:16px 18px;margin:0 0 18px}
+  .mn-card h3{font-size:14.5px;margin:0 0 4px;color:var(--ds-text)}
+  .mn-card .sub{font-size:12px;color:var(--ds-faint);margin-bottom:10px}
+  .mn-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin:10px 0}
+  .mn-strip img{width:100%;height:auto;display:block;border-radius:4px;border:1px solid var(--ds-border)}
+  .mn-labs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .mn-lab{border-radius:14px;padding:3px 10px;font-size:12px;font-weight:600;background:var(--ds-accent-soft);color:var(--ds-accent-strong);border:1px solid var(--ds-accent-ring)}
+  .mn-lab.ev{background:var(--ds-ok-soft,var(--ds-accent-soft));color:var(--ds-ok,var(--ds-accent-strong));border-color:var(--ds-ok,var(--ds-accent-ring))}
+  .mn-lab.none{background:transparent;color:var(--ds-faint);border:1px dashed var(--ds-border);font-weight:400}
+  .mn-sum{font-size:13.5px;color:var(--ds-text);line-height:1.65;margin-top:6px}
+  .mn-sum .lbl{font-size:11px;font-weight:700;color:var(--ds-accent-strong);text-transform:uppercase;letter-spacing:.5px}
+  .mn-e2e{font-size:12px;color:var(--ds-faint);margin-top:6px}
+  /* 表格（外壳三线表） */
+  .ds-tablewrap{overflow-x:auto;margin:14px 0}
+  .mn-fig{margin:18px 0}
+  .mn-fig svg{width:100%;height:auto;display:block}
+  .ds-figcap{text-align:center;font-size:12.5px;color:var(--ds-muted);margin-top:8px;line-height:1.6}
+  @media(max-width:700px){.mn-strip{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<header class="ds-header">
+  <h1>CR2-8B INT4 · 离线批量场景挖掘</h1>
+  <p class="ds-sub">Cosmos-Reason2-8B（INT4 AWQ 量化）部署在 Jetson AGX Orin，对真实驾驶视频做<strong>事件级离线挖掘</strong>：
+  一次批作业读入多段 clip，逐段输出结构化场景/事件标签，并实测吞吐与能耗。全部为真实 Orin 推理输出（非模拟）。
+  这是「0.1–2 Hz 事件级用例」定位的落地演示——不追求控制环帧率，追求离线处理吞吐与每段成本。</p>
+  <div class="mn-badges" id="badges"></div>
+</header>
+
+<main class="ds-main">
+
+<!-- ══════════ 一、演示 ══════════ -->
+<section class="ds-section">
+  <h2 class="ds-h2">一、演示：一次批作业挖掘 8 段驾驶视频</h2>
+  <p class="sec-note">输入 = 8 段 clip × 6 帧（前视宽角、长边 448、均匀采样）；输出 = 每段一个结构化 JSON 标签
+  （场景 / 光照 / 天气 / 安全相关事件 / 一句话摘要）。批作业在 Orin 上单次完成，下方数字全部来自本次真实运行。</p>
+  <div class="mn-overview" id="overview"></div>
+  <div class="callout">
+    <div class="t">标签口径（诚实声明）</div>
+    下方标签是<strong>模型输出</strong>——这些公开 clip 没有人工标注真值，此处展示的是功能的真实运作；
+    事件检测的<strong>带标注可靠性证据</strong>见第二节（n=184 OOD 基准分簇正确率）。
+  </div>
+  <div id="cards"></div>
+</section>
+
+<!-- ══════════ 二、评测结果 ══════════ -->
+<section class="ds-section">
+  <h2 class="ds-h2">二、评测结果</h2>
+  <p class="sec-note"><strong>数据集（带标注证据）</strong>：nvidia/PhysicalAI-Autonomous-Vehicles 的 OOD reasoning 基准
+  （gated，本页不展示其帧）——184 段驾驶 clip × 6 帧 @448，8 选 1 单选，8 个事件簇 × 23 题/簇，随机基线 12.5%。
+  每簇正确率 = 该事件类型的检测可靠性；三精度同帧同题同标答，唯一变量 = 模型精度。
+  本节数字来自 <code>cr2/eval/accuracy/driving/RESULTS.json</code>（已入库实测）。</p>
+
+  <div class="ds-tablewrap">
+  <table class="ds-table" id="tbl-cluster"></table>
+  </div>
+  <p class="note">表 1　按事件簇的正确率（n=184，8 选 1，随机基线 12.5%）。WORK_ZONES（施工区/临时交通管制）最强
+  （INT4 82.6%），CYCLISTS（骑行者/微出行复杂场景）最弱（INT4 34.8%）——挖掘系统对高频显性事件可靠，
+  对长尾弱势道路使用者事件需人工复核。INT4 总体 50.5% vs FP16 51.6%（−1.1 pts，McNemar p=0.815 不显著）。</p>
+
+  <div class="ds-tablewrap">
+  <table class="ds-table" id="tbl-cost"></table>
+  </div>
+  <p class="note">表 2　本次批作业（第一节 8 clip 运行）的吞吐与能耗。功率口径 = tegrastats 三轨之和
+  （VDD_GPU_SOC + VDD_CPU_CV + VIN_SYS_5V0），采样窗口 = 纯处理阶段（首请求开始后启动、进程退出即停，不含引擎加载）。
+  J/clip = P̄ × wall ÷ n<sub>clip</sub> = 50.1 W × 20.2 s ÷ 8；clips/hour = 3600 ÷ E2E 均值，为连续运行的外推值。
+  引擎 = backbone INT4 AWQ + lm_head INT4（最终部署形态）；表 1 的 INT4 臂为 backbone-INT4 / lm_head-fp16 引擎，两者口径差异已如实标注。</p>
+</section>
+
+<!-- ══════════ 三、核心方法 ══════════ -->
+<section class="ds-section">
+  <h2 class="ds-h2">三、核心方法</h2>
+  <p class="sec-note"><strong>输入 → 输出</strong>：每段 clip 输入 6 帧前视图像（长边 448、视频内均匀采样）+ 一条挖掘指令
+  （约定输出 JSON 的键与取值域）；输出一个结构化 JSON：<code>{scene, lighting, weather, events[], summary}</code>，
+  事件词表与 n=184 基准的 8 个事件簇同源（work_zone / complex_intersection / dense_pedestrians /
+  emergency_incident / animals / special_vehicle / cyclists / road_debris）。</p>
+  <figure class="mn-fig" id="pipeline-fig"></figure>
+  <p class="ds-figcap">图 1　离线批量挖掘管线：帧序列经 ViT 视觉编码器（fp16，每帧 112 token）进入 INT4 量化的
+  8B backbone，贪心解码（temp=0, top_k=1, ≤300 token）产出 JSON 文本，解析为结构化标签；
+  tegrastats 三轨功率全程采集得到每段能耗。</p>
+  <ul style="font-size:14px;line-height:1.8;color:var(--ds-text)">
+    <li><strong>量化部署</strong>：INT4 AWQ（backbone）+ lm_head INT4，TensorRT-Edge-LLM 引擎，Orin 32GB MAXN。
+    量化方法与全部口径见 <a href="../cr2.html">CR2 篇报告</a>（量化几乎免费：n=184 驾驶域 INT4 −1.1 pts 不显著）。</li>
+    <li><strong>批处理约束（如实披露）</strong>：视觉引擎单次预处理的 token 上限（maxHW=4096）限制并发批量——
+    6 帧/请求下 batch_size=4 会超限（cuSeqlens 4480 &gt; 4096），故本次作业 batch_size=1 顺序处理 8 请求；
+    离线场景关心吞吐（clips/hour）而非单请求延迟，该约束不影响用例成立。</li>
+    <li><strong>复现</strong>：输入构造 <code>cr2/eval/mining/build_input.py</code>、运行 <code>cr2/scripts/orin/run_pareto.sh</code>、
+    解析 <code>cr2/eval/mining/parse_mining.py</code>；原始输出与功率日志均已入库。</li>
+  </ul>
+  <div class="callout warn">
+    <div class="t">诚实边界</div>
+    演示 clip 取自 dgural 公开样本数据集（README 明示不适合 benchmarking/统计分析），数字仅展示功能运作；
+    带标注的事件检测可靠性以第二节 n=184 基准为准。模型标签不等同人工标注，长尾事件（表 1 弱簇）用于生产须人工复核。
+  </div>
+</section>
+
+</main>
+
+<footer class="ds-footer">
+  <p>帧来源：dgural/PhysicalAI-Autonomous-Vehicles-Sample（公开样本，camera_front_wide_120fov）。
+  推理与测量：Jetson AGX Orin 32GB（MAXN）· TensorRT-Edge-LLM 0.9.0 · 2026-11-15 实测。</p>
+  <p>源码与数据：<a href="https://github.com/ranpin/cosmos-edge/tree/main/cr2/eval/mining">github.com/ranpin/cosmos-edge · cr2/eval/mining</a>
+  　·　<a href="../cr2.html">CR2 篇报告</a>　·　<a href="../index.html">家族总览</a></p>
+</footer>
+
+<script>
+const DATA = {
+  run: {
+    n_clips: 8, n_frames: 48, wall_s: 20.16,
+    e2e_mean_s: 2.52, e2e_median_s: 2.565,
+    avg_power_W: 50.07, peak_power_W: 62.81, n_power_samples: 81,
+    j_per_clip: 126.2, clips_per_hour: 1428.4,
+    json_ok: 8,
+    engine: "CR2-8B INT4 AWQ backbone + lm_head INT4",
+    device: "Jetson AGX Orin 32GB (MAXN)"
+  },
+  clips: [
+    {id:"01d3588e", ctx:"商业区街道 · 立交桥下", e2e:2.672,
+     labels:{scene:"urban_street",lighting:"dusk_or_dawn",weather:"overcast",events:[],
+     summary:"The ego vehicle is driving through a quiet urban street with parked cars on both sides, passing under an overpass while maintaining a steady course."}},
+    {id:"26f8dc7e", ctx:"施工区 · 锥桶导流", e2e:2.566,
+     labels:{scene:"urban_street",lighting:"day",weather:"overcast",events:["work_zone"],
+     summary:"The ego vehicle proceeds through a work zone on an urban street, navigating around orange traffic cones and vehicles while maintaining a safe distance from surrounding traffic."}},
+    {id:"69cf2443", ctx:"夜间左转道", e2e:2.516,
+     labels:{scene:"urban_street",lighting:"night",weather:"clear",events:[],
+     summary:"The ego vehicle is driving at night on a clear, well-lit urban street, passing a stopped vehicle ahead while maintaining a safe distance and proceeding cautiously."}},
+    {id:"c3ca785e", ctx:"夜间 stop sign 路口", e2e:2.567,
+     labels:{scene:"urban_street",lighting:"night",weather:"clear",events:[],
+     summary:"The ego vehicle proceeds through an intersection at night, stops at a stop sign, and then continues along the street, passing a parked vehicle and a red car ahead."}},
+    {id:"ecafce84", ctx:"信号灯路口 · 等待左转", e2e:2.302,
+     labels:{scene:"intersection",lighting:"day",weather:"clear",events:[],
+     summary:"The ego vehicle is stopped at an intersection behind a red sedan, waiting for the traffic light to turn green before proceeding."}},
+    {id:"76f4a312", ctx:"进入右转车道", e2e:2.409,
+     labels:{scene:"urban_street",lighting:"day",weather:"overcast",events:[],
+     summary:"The ego vehicle travels along a two-way residential road, passing a white truck parked on the right side while maintaining a steady course."}},
+    {id:"0dd3eb7f", ctx:"直行跟车", e2e:2.565,
+     labels:{scene:"urban_street",lighting:"day",weather:"clear",events:[],
+     summary:"The ego vehicle travels along a two-lane road, passing a 4-way intersection with green lights, while other cars move in both directions under clear daytime conditions."}},
+    {id:"1f7ef408", ctx:"变道", e2e:2.565,
+     labels:{scene:"urban_street",lighting:"day",weather:"overcast",events:[],
+     summary:"The ego vehicle is driving on a two-lane road, following a black SUV ahead while maintaining a safe distance, with no immediate hazards or special events occurring."}}
+  ],
+  cluster: {
+    order: ["WORK_ZONES_TEMP_TRAFFIC_CONTROL", "PEDESTRIAN_DENSITY_OR_CLOSE_PROXIMITY", "COMPLEX_INTERSECTION_INTERACTION", "EMERGENCY_INCIDENT_SCENE", "SPECIAL_OR_UNCOMMON_VEHICLE_BEHAVIOR", "CYCLISTS_AND_MICROMOBILITY_COMPLEX", "ROAD_DEBRIS_OR_SAFETY_TRACES", "ANIMALS_BIRDS_ROADKILL"],
+    zh: {"ANIMALS_BIRDS_ROADKILL": "动物 / 路面动物", "COMPLEX_INTERSECTION_INTERACTION": "复杂交叉口交互", "CYCLISTS_AND_MICROMOBILITY_COMPLEX": "骑行者 / 微出行复杂场景", "EMERGENCY_INCIDENT_SCENE": "紧急事件现场", "PEDESTRIAN_DENSITY_OR_CLOSE_PROXIMITY": "行人密集 / 近距离", "ROAD_DEBRIS_OR_SAFETY_TRACES": "路面遗撒 / 安全痕迹", "SPECIAL_OR_UNCOMMON_VEHICLE_BEHAVIOR": "特殊/罕见车辆行为", "WORK_ZONES_TEMP_TRAFFIC_CONTROL": "施工区 / 临时交通管制"},
+    fp16: {overall:51.6, per:{"WORK_ZONES_TEMP_TRAFFIC_CONTROL":87.0,"PEDESTRIAN_DENSITY_OR_CLOSE_PROXIMITY":78.3,"COMPLEX_INTERSECTION_INTERACTION":65.2,"EMERGENCY_INCIDENT_SCENE":56.5,"SPECIAL_OR_UNCOMMON_VEHICLE_BEHAVIOR":43.5,"CYCLISTS_AND_MICROMOBILITY_COMPLEX":21.7,"ROAD_DEBRIS_OR_SAFETY_TRACES":30.4,"ANIMALS_BIRDS_ROADKILL":30.4}},
+    int8: {overall:47.8, per:{"WORK_ZONES_TEMP_TRAFFIC_CONTROL":82.6,"PEDESTRIAN_DENSITY_OR_CLOSE_PROXIMITY":78.3,"COMPLEX_INTERSECTION_INTERACTION":56.5,"EMERGENCY_INCIDENT_SCENE":56.5,"SPECIAL_OR_UNCOMMON_VEHICLE_BEHAVIOR":30.4,"CYCLISTS_AND_MICROMOBILITY_COMPLEX":8.7,"ROAD_DEBRIS_OR_SAFETY_TRACES":34.8,"ANIMALS_BIRDS_ROADKILL":34.8}},
+    int4: {overall:50.5, per:{"WORK_ZONES_TEMP_TRAFFIC_CONTROL":82.6,"PEDESTRIAN_DENSITY_OR_CLOSE_PROXIMITY":78.3,"COMPLEX_INTERSECTION_INTERACTION":56.5,"EMERGENCY_INCIDENT_SCENE":47.8,"SPECIAL_OR_UNCOMMON_VEHICLE_BEHAVIOR":43.5,"CYCLISTS_AND_MICROMOBILITY_COMPLEX":34.8,"ROAD_DEBRIS_OR_SAFETY_TRACES":34.8,"ANIMALS_BIRDS_ROADKILL":26.1}}
+  }
+};
+
+/* ── 徽章与总览 ── */
+document.getElementById("badges").innerHTML =
+  [DATA.run.device, DATA.run.engine, "8 clips × 6 帧", "JSON 合规 " + DATA.run.json_ok + "/8", "真实 Orin 输出"]
+  .map(b => `<span class="mn-badge">${b}</span>`).join("");
+document.getElementById("overview").innerHTML = [
+  [DATA.run.n_clips + " 段", "clip（" + DATA.run.n_frames + " 帧）"],
+  [DATA.run.wall_s + " s", "批作业墙钟"],
+  [DATA.run.e2e_mean_s + " s", "E2E 均值 / clip"],
+  [DATA.run.avg_power_W + " W", "平均功率（三轨和）"],
+  [DATA.run.j_per_clip + " J", "能耗 / clip"],
+  [DATA.run.clips_per_hour.toLocaleString(), "clips/hour（外推）"]
+].map(([v,k]) => `<div class="mn-ov"><div class="v">${v}</div><div class="k">${k}</div></div>`).join("");
+
+/* ── clip 卡片 ── */
+const EV_ZH = {work_zone:"施工区",complex_intersection:"复杂交叉口",dense_pedestrians:"行人密集",
+  emergency_incident:"紧急事件",animals:"动物",special_vehicle:"特殊车辆",cyclists:"骑行者",road_debris:"路面遗撒"};
+document.getElementById("cards").innerHTML = DATA.clips.map((c,i) => {
+  const strip = Array.from({length:6},(_,j)=>`<img src="frames/${c.id}/frame_${j+1}.jpg" alt="${c.id} 帧${j+1}" loading="lazy">`).join("");
+  const ev = c.labels.events.length
+    ? c.labels.events.map(e=>`<span class="mn-lab ev">⚠ ${EV_ZH[e]||e}</span>`).join("")
+    : `<span class="mn-lab none">未检出目标事件</span>`;
+  return `<div class="mn-card">
+    <h3>clip ${i+1} · ${c.id}</h3>
+    <div class="sub">${c.ctx}　·　E2E ${c.e2e.toFixed(2)} s</div>
+    <div class="mn-strip">${strip}</div>
+    <div class="mn-labs">
+      <span class="mn-lab">${c.labels.scene}</span>
+      <span class="mn-lab">${c.labels.lighting}</span>
+      <span class="mn-lab">${c.labels.weather}</span>
+      ${ev}
+    </div>
+    <div class="mn-sum"><span class="lbl">模型摘要（原文）</span><br>${c.labels.summary}</div>
+  </div>`;
+}).join("");
+
+/* ── 表 1：分簇正确率 ── */
+(function(){
+  const C = DATA.cluster;
+  let h = `<caption style="caption-side:top;text-align:center;font-size:13px;color:var(--ds-muted);padding-bottom:8px">
+    表 1　n=184 驾驶域 OOD 基准：按事件簇正确率（%，8 选 1，随机基线 12.5%；n=23/簇）</caption>
+    <tr><th>事件簇</th><th>Cosmos-Reason2-8B FP16</th><th>Cosmos-Reason2-8B INT8</th><th>Cosmos-Reason2-8B INT4</th></tr>`;
+  C.order.forEach(k => {
+    h += `<tr><td>${C.zh[k]}</td><td>${C.fp16.per[k].toFixed(1)}</td><td>${C.int8.per[k].toFixed(1)}</td><td>${C.int4.per[k].toFixed(1)}</td></tr>`;
+  });
+  h += `<tr><td><strong>总体（n=184）</strong></td><td><strong>${C.fp16.overall}</strong></td><td><strong>${C.int8.overall}</strong></td><td><strong>${C.int4.overall}</strong></td></tr>`;
+  document.getElementById("tbl-cluster").innerHTML = h;
+})();
+
+/* ── 表 2：吞吐与能耗 ── */
+(function(){
+  const r = DATA.run;
+  const rows = [
+    ["批作业规模", `${r.n_clips} clips × 6 帧 = ${r.n_frames} 帧（长边 448）`],
+    ["墙钟（纯处理窗口）", `${r.wall_s} s`],
+    ["E2E 均值 / 中位", `${r.e2e_mean_s} s / ${r.e2e_median_s} s`],
+    ["平均功率（三轨和，${r.n_power_samples} 样本）", `${r.avg_power_W} W（峰值 ${r.peak_power_W} W）`],
+    ["能耗 / clip", `${r.j_per_clip} J　= P̄ × wall ÷ n = ${r.avg_power_W} × ${r.wall_s} ÷ ${r.n_clips}`],
+    ["吞吐（连续运行外推）", `${r.clips_per_hour.toLocaleString()} clips/hour = 3600 ÷ ${r.e2e_mean_s}`],
+    ["千段能耗", `${(r.j_per_clip).toFixed(0)} J × 1000 ≈ ${(r.j_per_clip/3.6).toFixed(1)} kWh`],
+    ["JSON 合规率", `${r.json_ok}/${r.n_clips}（贪心解码，temp=0）`]
+  ];
+  document.getElementById("tbl-cost").innerHTML =
+    `<caption style="caption-side:top;text-align:center;font-size:13px;color:var(--ds-muted);padding-bottom:8px">
+     表 2　本次批作业的吞吐与能耗（Orin 32GB MAXN，tegrastats 三轨口径）</caption>
+     <tr><th>项</th><th>值（口径）</th></tr>` +
+    rows.map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join("");
+})();
+
+/* ── 图 1：管线 SVG ── */
+(function(){
+  const W=1000,H=210;
+  const box=(x,y,w,h,t1,t2,cls)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" class="${cls}"/>
+    <text x="${x+w/2}" y="${y+h/2-6}" text-anchor="middle" class="bt">${t1}</text>
+    <text x="${x+w/2}" y="${y+h/2+14}" text-anchor="middle" class="bs">${t2}</text>`;
+  const arr=(x1,x2,y)=>`<line x1="${x1}" y1="${y}" x2="${x2-7}" y2="${y}" class="ar"/>
+    <path d="M ${x2-9} ${y-5} L ${x2} ${y} L ${x2-9} ${y+5} z" class="arh"/>`;
+  document.getElementById("pipeline-fig").innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="离线批量挖掘管线">
+  <style>
+    .src{fill:var(--ds-panel);stroke:var(--ds-border);stroke-width:1.5}
+    .mdl{fill:var(--ds-accent-soft);stroke:var(--ds-accent);stroke-width:1.5}
+    .out{fill:var(--ds-ok-soft,var(--ds-accent-soft));stroke:var(--ds-ok,var(--ds-accent));stroke-width:1.5}
+    .bt{font:600 14px -apple-system,'Noto Sans SC',sans-serif;fill:var(--ds-text)}
+    .bs{font:11.5px -apple-system,'Noto Sans SC',sans-serif;fill:var(--ds-muted)}
+    .ar{stroke:var(--ds-muted);stroke-width:1.6}
+    .arh{fill:var(--ds-muted)}
+    .pw{fill:none;stroke:var(--ds-warn,var(--ds-muted));stroke-width:1.4;stroke-dasharray:5 4}
+    .pwt{font:11.5px -apple-system,'Noto Sans SC',sans-serif;fill:var(--ds-warn,var(--ds-muted))}
+  </style>
+  ${box(10,70,150,70,"8 clips × 6 帧","长边 448 · 均匀采样","src")}
+  ${arr(160,190,105)}
+  ${box(190,70,170,70,"ViT 视觉编码器","fp16 · 112 token/帧","mdl")}
+  ${arr(360,390,105)}
+  ${box(390,70,200,70,"8B backbone + lm_head","INT4 AWQ · 贪心 ≤300 tok","mdl")}
+  ${arr(590,620,105)}
+  ${box(620,70,160,70,"JSON 解析","合规 8/8","out")}
+  ${arr(780,810,105)}
+  ${box(810,70,180,70,"结构化事件标签","scene/events/summary","out")}
+  <rect x="300" y="12" width="380" height="34" rx="8" fill="none" class="pw"/>
+  <text x="490" y="34" text-anchor="middle" class="pwt">tegrastats 三轨功率全程采集 → 50.1 W 均值 → 126.2 J/clip</text>
+  <line x1="490" y1="46" x2="490" y2="68" class="pw"/>
+  </svg>`;
+})();
+</script>
+</body>
+</html>

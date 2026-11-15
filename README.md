@@ -7,6 +7,8 @@ policy 能力边界）。全部为 Orin 实机实测，非模拟。零预算 · 
 
 🎬 **在线 Demo（Cosmos3-Edge 2B 驾驶场景自由描述，真实 Orin 推理输出）**：<https://ranpin.github.io/cosmos-edge/cosmos3-demo/>
 
+⛏️ **在线 Demo（CR2-8B INT4 离线批量场景挖掘：8 clip 批作业 → 结构化事件标签 + 实测吞吐/能耗）**：<https://ranpin.github.io/cosmos-edge/cr2-demo/>
+
 📊 **跨代精度对比专篇（n=184 驾驶域，Cosmos3-Edge 2B vs CR2-8B 三精度）**：<https://ranpin.github.io/cosmos-edge/cosmos3.html>
 
 📄 **CR2 篇主报告（8B 量化部署实战，图 1–22 / 表 1–13）**：<https://ranpin.github.io/cosmos-edge/cr2.html>

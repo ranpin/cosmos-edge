@@ -1,0 +1,349 @@
+{
+    "input_file": "mining_demo/mining_input.json",
+    "responses": [
+        {
+            "batch_idx": 0,
+            "finish_reason": "end-of-sequence",
+            "formatted_complete_request": "<|im_start|>user\n<|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|>You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}<|im_end|>\n<|im_start|>assistant\n",
+            "formatted_system_prompt": "",
+            "messages": [
+                {
+                    "content": [
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/01d3588e/frame_1.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/01d3588e/frame_2.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/01d3588e/frame_3.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/01d3588e/frame_4.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/01d3588e/frame_5.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/01d3588e/frame_6.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "text": "You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}",
+                            "type": "text"
+                        }
+                    ],
+                    "role": "user"
+                }
+            ],
+            "output_text": "```json\n{\n  \"scene\": \"urban_street\",\n  \"lighting\": \"dusk_or_dawn\",\n  \"weather\": \"overcast\",\n  \"events\": [],\n  \"summary\": \"The ego vehicle is driving through a quiet urban street with parked cars on both sides, passing under an overpass while maintaining a steady course.\"\n}\n```",
+            "request_idx": 0
+        },
+        {
+            "batch_idx": 0,
+            "finish_reason": "end-of-sequence",
+            "formatted_complete_request": "<|im_start|>user\n<|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|>You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}<|im_end|>\n<|im_start|>assistant\n",
+            "formatted_system_prompt": "",
+            "messages": [
+                {
+                    "content": [
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/26f8dc7e/frame_1.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/26f8dc7e/frame_2.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/26f8dc7e/frame_3.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/26f8dc7e/frame_4.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/26f8dc7e/frame_5.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/26f8dc7e/frame_6.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "text": "You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}",
+                            "type": "text"
+                        }
+                    ],
+                    "role": "user"
+                }
+            ],
+            "output_text": "```json\n{\n  \"scene\": \"urban_street\",\n  \"lighting\": \"day\",\n  \"weather\": \"overcast\",\n  \"events\": [\"work_zone\"],\n  \"summary\": \"The ego vehicle proceeds through a work zone on an urban street, navigating around orange traffic cones and vehicles while maintaining a safe distance from surrounding traffic.\"\n}\n```",
+            "request_idx": 1
+        },
+        {
+            "batch_idx": 0,
+            "finish_reason": "end-of-sequence",
+            "formatted_complete_request": "<|im_start|>user\n<|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|>You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}<|im_end|>\n<|im_start|>assistant\n",
+            "formatted_system_prompt": "",
+            "messages": [
+                {
+                    "content": [
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/69cf2443/frame_1.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/69cf2443/frame_2.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/69cf2443/frame_3.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/69cf2443/frame_4.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/69cf2443/frame_5.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/69cf2443/frame_6.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "text": "You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}",
+                            "type": "text"
+                        }
+                    ],
+                    "role": "user"
+                }
+            ],
+            "output_text": "```json\n{\n  \"scene\": \"urban_street\",\n  \"lighting\": \"night\",\n  \"weather\": \"clear\",\n  \"events\": [],\n  \"summary\": \"The ego vehicle is driving at night on a clear, well-lit urban street, passing a stopped vehicle ahead while maintaining a safe distance and proceeding cautiously.\"\n}\n```",
+            "request_idx": 2
+        },
+        {
+            "batch_idx": 0,
+            "finish_reason": "end-of-sequence",
+            "formatted_complete_request": "<|im_start|>user\n<|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|>You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}<|im_end|>\n<|im_start|>assistant\n",
+            "formatted_system_prompt": "",
+            "messages": [
+                {
+                    "content": [
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/c3ca785e/frame_1.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/c3ca785e/frame_2.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/c3ca785e/frame_3.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/c3ca785e/frame_4.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/c3ca785e/frame_5.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/c3ca785e/frame_6.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "text": "You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}",
+                            "type": "text"
+                        }
+                    ],
+                    "role": "user"
+                }
+            ],
+            "output_text": "```json\n{\n  \"scene\": \"urban_street\",\n  \"lighting\": \"night\",\n  \"weather\": \"clear\",\n  \"events\": [],\n  \"summary\": \"The ego vehicle proceeds through an intersection at night, stops at a stop sign, and then continues along the street, passing a parked vehicle and a red car ahead.\"\n}\n```",
+            "request_idx": 3
+        },
+        {
+            "batch_idx": 0,
+            "finish_reason": "end-of-sequence",
+            "formatted_complete_request": "<|im_start|>user\n<|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|>You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}<|im_end|>\n<|im_start|>assistant\n",
+            "formatted_system_prompt": "",
+            "messages": [
+                {
+                    "content": [
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/ecafce84/frame_1.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/ecafce84/frame_2.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/ecafce84/frame_3.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/ecafce84/frame_4.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/ecafce84/frame_5.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/ecafce84/frame_6.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "text": "You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}",
+                            "type": "text"
+                        }
+                    ],
+                    "role": "user"
+                }
+            ],
+            "output_text": "```json\n{\n  \"scene\": \"intersection\",\n  \"lighting\": \"day\",\n  \"weather\": \"clear\",\n  \"events\": [],\n  \"summary\": \"The ego vehicle is stopped at an intersection behind a red sedan, waiting for the traffic light to turn green before proceeding.\"\n}\n```",
+            "request_idx": 4
+        },
+        {
+            "batch_idx": 0,
+            "finish_reason": "end-of-sequence",
+            "formatted_complete_request": "<|im_start|>user\n<|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|>You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}<|im_end|>\n<|im_start|>assistant\n",
+            "formatted_system_prompt": "",
+            "messages": [
+                {
+                    "content": [
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/76f4a312/frame_1.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/76f4a312/frame_2.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/76f4a312/frame_3.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/76f4a312/frame_4.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/76f4a312/frame_5.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/76f4a312/frame_6.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "text": "You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}",
+                            "type": "text"
+                        }
+                    ],
+                    "role": "user"
+                }
+            ],
+            "output_text": "```json\n{\n  \"scene\": \"urban_street\",\n  \"lighting\": \"day\",\n  \"weather\": \"overcast\",\n  \"events\": [],\n  \"summary\": \"The ego vehicle travels along a two-way residential road, passing a white truck parked on the right side while maintaining a steady course.\"\n}\n```",
+            "request_idx": 5
+        },
+        {
+            "batch_idx": 0,
+            "finish_reason": "end-of-sequence",
+            "formatted_complete_request": "<|im_start|>user\n<|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|>You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}<|im_end|>\n<|im_start|>assistant\n",
+            "formatted_system_prompt": "",
+            "messages": [
+                {
+                    "content": [
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/0dd3eb7f/frame_1.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/0dd3eb7f/frame_2.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/0dd3eb7f/frame_3.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/0dd3eb7f/frame_4.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/0dd3eb7f/frame_5.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/0dd3eb7f/frame_6.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "text": "You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}",
+                            "type": "text"
+                        }
+                    ],
+                    "role": "user"
+                }
+            ],
+            "output_text": "```json\n{\n  \"scene\": \"urban_street\",\n  \"lighting\": \"day\",\n  \"weather\": \"clear\",\n  \"events\": [],\n  \"summary\": \"The ego vehicle travels along a two-lane road, passing a 4-way intersection with green lights, while other cars move in both directions under clear daytime conditions.\"\n}\n```",
+            "request_idx": 6
+        },
+        {
+            "batch_idx": 0,
+            "finish_reason": "end-of-sequence",
+            "formatted_complete_request": "<|im_start|>user\n<|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|><|vision_start|><|image_pad|><|vision_end|>You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}<|im_end|>\n<|im_start|>assistant\n",
+            "formatted_system_prompt": "",
+            "messages": [
+                {
+                    "content": [
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/1f7ef408/frame_1.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/1f7ef408/frame_2.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/1f7ef408/frame_3.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/1f7ef408/frame_4.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/1f7ef408/frame_5.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "image": "/home/vision/chenrunbin/alpamayo-edge/mining_demo/frames/1f7ef408/frame_6.jpg",
+                            "type": "image"
+                        },
+                        {
+                            "text": "You are an offline driving-data mining system. The six images are consecutive frames from one forward-camera driving clip. Analyze the clip and output ONLY a single JSON object with exactly these keys and no other text: {\"scene\": one of [\"highway\",\"urban_street\",\"intersection\",\"parking_lot\",\"other\"], \"lighting\": one of [\"day\",\"night\",\"dusk_or_dawn\"], \"weather\": one of [\"clear\",\"overcast\",\"rain\",\"fog\",\"snow\"], \"events\": a list of any of [\"work_zone\",\"complex_intersection\",\"dense_pedestrians\",\"emergency_incident\",\"animals\",\"special_vehicle\",\"cyclists\",\"road_debris\"] (use [] if none), \"summary\": one short English sentence on the most safety-relevant aspect of this clip.}",
+                            "type": "text"
+                        }
+                    ],
+                    "role": "user"
+                }
+            ],
+            "output_text": "```json\n{\n  \"scene\": \"urban_street\",\n  \"lighting\": \"day\",\n  \"weather\": \"overcast\",\n  \"events\": [],\n  \"summary\": \"The ego vehicle is driving on a two-lane road, following a black SUV ahead while maintaining a safe distance, with no immediate hazards or special events occurring.\"\n}\n```",
+            "request_idx": 7
+        }
+    ]
+}

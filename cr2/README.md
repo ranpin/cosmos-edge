@@ -7,6 +7,8 @@ Cosmos 家族推理 VLM（`nvidia/Cosmos-Reason2-8B` / `-2B`）的 INT4 AWQ / IN
 
 📄 **主报告（图 1–22 / 表 1–13）**：<https://ranpin.github.io/cosmos-edge/cr2.html>
 
+⛏️ **在线 Demo（离线批量场景挖掘：8 clip 批作业 → 结构化事件标签 + 实测吞吐/能耗）**：<https://ranpin.github.io/cosmos-edge/cr2-demo/>
+
 ## 核心结论
 
 - **量化是 32GB 边缘的部署前提**：FP16 build（峰值 54.8G）/载入双 OOM；INT4 decode 快 2.66×、引擎 4.8G。
